@@ -9,35 +9,27 @@ let currentLesson = 'intro';
 // ===================================
 
 function nextLesson(lessonId) {
-    // すべてのレッスンを非表示
     const lessons = document.querySelectorAll('.lesson');
-    lessons.forEach(lesson => {
-        lesson.classList.remove('active');
-    });
+    lessons.forEach(lesson => lesson.classList.remove('active'));
 
-    // すべてのナビボタンの active を削除
     const navBtns = document.querySelectorAll('.nav-btn');
-    navBtns.forEach(btn => {
-        btn.classList.remove('active');
-    });
+    navBtns.forEach(btn => btn.classList.remove('active'));
 
-    // 指定されたレッスンを表示
     const targetLesson = document.getElementById(`lesson-${lessonId}`);
     if (targetLesson) {
         targetLesson.classList.add('active');
         currentLesson = lessonId;
 
-        // 対応するナビボタンをアクティブに
         const targetBtn = document.querySelector(`[data-lesson="${lessonId}"]`);
         if (targetBtn) {
             targetBtn.classList.add('active');
         }
 
         // ページトップへスクロール
-        window.scrollTo({
-            top: 0,
-            behavior: 'smooth'
-        });
+        const lessonContent = document.querySelector('.lesson-content');
+        if (lessonContent) {
+            lessonContent.scrollTop = 0;
+        }
     }
 }
 
@@ -47,7 +39,6 @@ function nextLesson(lessonId) {
 
 document.addEventListener('DOMContentLoaded', () => {
     const navBtns = document.querySelectorAll('.nav-btn');
-
     navBtns.forEach(btn => {
         btn.addEventListener('click', () => {
             const lessonId = btn.getAttribute('data-lesson');
@@ -55,9 +46,157 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
+    // 用語のクリックイベント
+    setupTermEvents();
+
+    // 用語カードのクリックイベント
+    setupTermCardEvents();
+
     // 初期化
     updateFunctor();
 });
+
+// ===================================
+// 用語のクリック・ホバーイベント
+// ===================================
+
+function setupTermEvents() {
+    const terms = document.querySelectorAll('.term');
+
+    terms.forEach(term => {
+        // クリックで用語詳細を表示
+        term.addEventListener('click', function(e) {
+            e.preventDefault();
+            const termId = this.getAttribute('data-term');
+            showTermDetail(termId);
+        });
+
+        // ホバーでツールチップ表示
+        term.addEventListener('mouseenter', function(e) {
+            const termId = this.getAttribute('data-term');
+            showTermTooltip(this, termId);
+        });
+
+        term.addEventListener('mouseleave', function() {
+            hideTermTooltip();
+        });
+    });
+}
+
+function showTermDetail(termId) {
+    const termCard = document.getElementById(`term-${termId}`);
+    const currentDetail = document.getElementById('current-term-detail');
+
+    if (termCard && currentDetail) {
+        // すべての用語カードのactiveを削除
+        document.querySelectorAll('.term-card').forEach(card => {
+            card.classList.remove('active');
+        });
+
+        // 選択された用語カードをハイライト
+        termCard.classList.add('active');
+
+        // 詳細を表示
+        const title = termCard.querySelector('h5').textContent;
+        const content = termCard.querySelector('p').textContent;
+        const example = termCard.querySelector('.example-text');
+
+        currentDetail.innerHTML = `
+            <strong>${title}</strong><br/>
+            ${content}
+            ${example ? `<br/><em>${example.textContent}</em>` : ''}
+        `;
+        currentDetail.classList.add('highlight');
+
+        // サイドバーにスクロール
+        termCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+        setTimeout(() => {
+            currentDetail.classList.remove('highlight');
+        }, 500);
+    }
+}
+
+function showTermTooltip(element, termId) {
+    const tooltips = {
+        'category-theory': '関係の関係の関係を扱う数学',
+        'category': '対象と射の集まり',
+        'object': '圏を構成する「物」',
+        'morphism': '対象を繋ぐ「矢印」',
+        'composition': '射を繋げること',
+        'functor': '圏から圏への写像',
+        'natural-transformation': '関手から関手への自然な対応',
+        'naturality': 'どの順序でも同じ結果になる性質',
+        'limit': '最も普遍的な頂点（最大公約数的）',
+        'string-diagram': '射を線で表す図式'
+    };
+
+    const text = tooltips[termId];
+    if (!text) return;
+
+    hideTermTooltip();
+
+    const tooltip = document.createElement('div');
+    tooltip.id = 'term-tooltip';
+    tooltip.style.cssText = `
+        position: fixed;
+        background: rgba(0, 0, 0, 0.9);
+        color: white;
+        padding: 8px 12px;
+        border-radius: 5px;
+        font-size: 0.85em;
+        max-width: 250px;
+        z-index: 1000;
+        pointer-events: none;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    `;
+    tooltip.textContent = text;
+
+    document.body.appendChild(tooltip);
+
+    const rect = element.getBoundingClientRect();
+    tooltip.style.left = rect.left + rect.width / 2 - tooltip.offsetWidth / 2 + 'px';
+    tooltip.style.top = rect.top - tooltip.offsetHeight - 8 + window.scrollY + 'px';
+}
+
+function hideTermTooltip() {
+    const tooltip = document.getElementById('term-tooltip');
+    if (tooltip) tooltip.remove();
+}
+
+// ===================================
+// 用語カードのクリックイベント
+// ===================================
+
+function setupTermCardEvents() {
+    const termCards = document.querySelectorAll('.term-card');
+
+    termCards.forEach(card => {
+        card.addEventListener('click', function() {
+            // すべてのactiveを削除
+            termCards.forEach(c => c.classList.remove('active'));
+
+            // クリックされたカードをactive
+            this.classList.add('active');
+
+            // 詳細を現在学習中エリアに表示
+            const currentDetail = document.getElementById('current-term-detail');
+            const title = this.querySelector('h5').textContent;
+            const paragraphs = Array.from(this.querySelectorAll('p'));
+            const content = paragraphs.map(p => p.textContent).join('<br/><br/>');
+
+            currentDetail.innerHTML = `
+                <strong>${title}</strong><br/><br/>
+                ${content}
+            `;
+            currentDetail.classList.add('highlight');
+
+            setTimeout(() => {
+                currentDetail.classList.remove('highlight');
+            }, 500);
+        });
+    });
+}
 
 // ===================================
 // クイズ機能
@@ -71,25 +210,17 @@ function checkAnswer(answer) {
         resultDiv.classList.remove('incorrect');
         resultDiv.classList.add('correct');
         resultDiv.innerHTML = `
-            <h4>🎉 正解！</h4>
-            <p>その通りです！チーズを乗せてからソースをかけても、ソースをかけてからチーズを乗せても、
-            デミグラスチーズハンバーグになります。これが圏における「合成」の可換性です。</p>
-            <p>見た目は少し違うかもしれませんが、圏論的には同じ対象として扱えます。</p>
+            <strong>✓ 正解！</strong> チーズ→ソースでも、ソース→チーズでも「デミグラスチーズハンバーグ」になります。
+            これが圏の「可換性」です。
         `;
     } else {
         resultDiv.classList.remove('correct');
         resultDiv.classList.add('incorrect');
         resultDiv.innerHTML = `
-            <h4>🤔 もう一度考えてみましょう</h4>
-            <p>実は、どちらの順序でも「デミグラスチーズハンバーグ」という同じ結果になります。</p>
-            <p>これは圏論の重要な性質で、異なる経路（射の合成）でも同じ対象に到達できることを示しています。</p>
+            <strong>✗ もう一度考えてみましょう</strong><br/>
+            実は、どちらの順序でも同じ結果になります。これが圏論の重要な性質です。
         `;
     }
-
-    // 3秒後にアニメーション
-    setTimeout(() => {
-        resultDiv.style.animation = 'pulse 0.5s ease';
-    }, 100);
 }
 
 // ===================================
@@ -106,14 +237,12 @@ function updateFunctor() {
     const dish = dishSelect.value;
     const set = setSelect.value;
 
-    // 料理名のマッピング
     const dishNames = {
         'hamburger': 'ハンバーグ',
         'cheese': 'チーズハンバーグ',
-        'demi': 'デミグラスハンバーグ'
+        'demi': 'デミハンバーグ'
     };
 
-    // セット名のマッピング
     const setNames = {
         'rice': 'ライス定食 🍚',
         'bread': 'パン定食 🍞',
@@ -125,12 +254,11 @@ function updateFunctor() {
 
     resultText.textContent = `${dishName}${setName}`;
 
-    // アニメーション効果
     const resultBox = document.getElementById('functor-result');
     if (resultBox) {
         resultBox.style.animation = 'none';
         setTimeout(() => {
-            resultBox.style.animation = 'fadeIn 0.5s ease';
+            resultBox.style.animation = 'fadeIn 0.4s ease';
         }, 10);
     }
 }
@@ -140,21 +268,19 @@ function updateFunctor() {
 // ===================================
 
 document.addEventListener('DOMContentLoaded', () => {
-    // ハンバーグ圏のSVG要素にツールチップを追加
     const objects = document.querySelectorAll('.object');
 
     objects.forEach(obj => {
         obj.addEventListener('mouseenter', function() {
             const id = this.getAttribute('id');
-            showTooltip(id, this);
+            showSVGTooltip(id, this);
         });
 
         obj.addEventListener('mouseleave', function() {
-            hideTooltip();
+            hideSVGTooltip();
         });
     });
 
-    // 会社組織図のSVG要素
     const companyNodes = document.querySelectorAll('.company-node');
 
     companyNodes.forEach(node => {
@@ -164,193 +290,61 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
-// ツールチップ表示
-function showTooltip(id, element) {
+function showSVGTooltip(id, element) {
     const tooltips = {
-        'hamburger': '基本のハンバーグ - すべてのハンバーグの起点となる対象です',
-        'cheese-hamburger': 'チーズハンバーグ - ハンバーグに「チーズを乗せる」という射を適用した結果',
-        'demi-hamburger': 'デミグラスハンバーグ - ハンバーグに「ソースをかける」という射を適用した結果',
-        'demi-cheese-hamburger': 'デミグラスチーズハンバーグ - 2つの射を合成した結果'
+        'hamburger': '基本のハンバーグ - すべての起点',
+        'cheese-hamburger': 'チーズハンバーグ - 「+チーズ」の射を適用',
+        'demi-hamburger': 'デミグラスハンバーグ - 「+ソース」の射を適用',
+        'demi-cheese-hamburger': 'デミチーズ - 2つの射を合成した結果'
     };
 
     const message = tooltips[id];
     if (!message) return;
 
-    // 既存のツールチップを削除
-    hideTooltip();
+    hideSVGTooltip();
 
-    // 新しいツールチップを作成
     const tooltip = document.createElement('div');
     tooltip.id = 'svg-tooltip';
-    tooltip.style.position = 'absolute';
-    tooltip.style.background = 'rgba(0, 0, 0, 0.8)';
-    tooltip.style.color = 'white';
-    tooltip.style.padding = '10px 15px';
-    tooltip.style.borderRadius = '5px';
-    tooltip.style.fontSize = '14px';
-    tooltip.style.maxWidth = '300px';
-    tooltip.style.zIndex = '1000';
-    tooltip.style.pointerEvents = 'none';
+    tooltip.style.cssText = `
+        position: fixed;
+        background: rgba(0, 0, 0, 0.9);
+        color: white;
+        padding: 10px 15px;
+        border-radius: 5px;
+        font-size: 0.9em;
+        max-width: 300px;
+        z-index: 1000;
+        pointer-events: none;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    `;
     tooltip.textContent = message;
 
     document.body.appendChild(tooltip);
 
-    // 位置を設定
     const rect = element.getBoundingClientRect();
     tooltip.style.left = rect.left + rect.width / 2 - tooltip.offsetWidth / 2 + 'px';
-    tooltip.style.top = rect.top - tooltip.offsetHeight - 10 + window.scrollY + 'px';
+    tooltip.style.top = rect.top - tooltip.offsetHeight - 10 + 'px';
 }
 
-// ツールチップ非表示
-function hideTooltip() {
+function hideSVGTooltip() {
     const tooltip = document.getElementById('svg-tooltip');
-    if (tooltip) {
-        tooltip.remove();
-    }
+    if (tooltip) tooltip.remove();
 }
 
-// ノードのハイライト
 function highlightNode(node) {
-    // すべてのノードのストロークをリセット
     const allNodes = document.querySelectorAll('.company-node');
     allNodes.forEach(n => {
         n.style.strokeWidth = '2';
     });
 
-    // クリックされたノードをハイライト
     node.style.strokeWidth = '4';
-    node.style.animation = 'pulse 0.5s ease';
 }
-
-// ===================================
-// 学習進捗の追跡
-// ===================================
-
-let lessonProgress = {
-    intro: false,
-    category: false,
-    functor: false,
-    natural: false,
-    practice: false
-};
-
-function markLessonComplete(lessonId) {
-    lessonProgress[lessonId] = true;
-    updateProgress();
-
-    // ローカルストレージに保存
-    if (typeof(Storage) !== "undefined") {
-        localStorage.setItem('categoryTheoryProgress', JSON.stringify(lessonProgress));
-    }
-}
-
-function updateProgress() {
-    const completedCount = Object.values(lessonProgress).filter(v => v).length;
-    const totalCount = Object.keys(lessonProgress).length;
-    const percentage = Math.round((completedCount / totalCount) * 100);
-
-    console.log(`学習進捗: ${completedCount}/${totalCount} (${percentage}%)`);
-}
-
-// ページ読み込み時に進捗を復元
-document.addEventListener('DOMContentLoaded', () => {
-    if (typeof(Storage) !== "undefined") {
-        const saved = localStorage.getItem('categoryTheoryProgress');
-        if (saved) {
-            lessonProgress = JSON.parse(saved);
-            updateProgress();
-        }
-    }
-});
-
-// ===================================
-// ストリング図式のアニメーション
-// ===================================
-
-function animateStringDiagram() {
-    const elements = document.querySelectorAll('.carbonara-diagram .ingredient, .carbonara-diagram .arrow, .carbonara-diagram .result');
-
-    elements.forEach((element, index) => {
-        element.style.opacity = '0';
-        element.style.transform = 'translateY(20px)';
-
-        setTimeout(() => {
-            element.style.transition = 'all 0.5s ease';
-            element.style.opacity = '1';
-            element.style.transform = 'translateY(0)';
-        }, index * 200);
-    });
-}
-
-// イントロレッスンが表示されたときにアニメーション開始
-document.addEventListener('DOMContentLoaded', () => {
-    setTimeout(() => {
-        animateStringDiagram();
-    }, 500);
-});
-
-// ===================================
-// コンセプトカードのインタラクション
-// ===================================
-
-document.addEventListener('DOMContentLoaded', () => {
-    const conceptCards = document.querySelectorAll('.concept-card');
-
-    conceptCards.forEach(card => {
-        card.addEventListener('click', function() {
-            // カードの内容に応じてアラートを表示
-            const title = this.querySelector('h4').textContent;
-            const description = this.querySelector('p').textContent;
-
-            // より詳細な説明
-            const details = {
-                '1. 圏（けん）': 'objects（対象）とmorphisms（射）の集まりです。ハンバーグメニューのように、物と物の関係を表現します。',
-                '2. 関手（かんしゅ）': '2つの圏の間の構造を保つ写像です。ライスセットのように、圏全体を別の圏に移します。',
-                '3. 自然変換': '2つの関手の間の「自然な」対応です。ライスからパンへの変更のように、関係性を保ったまま変換します。'
-            };
-
-            const detail = details[title];
-            if (detail) {
-                // カードをハイライト
-                conceptCards.forEach(c => c.style.transform = '');
-                this.style.transform = 'scale(1.05)';
-
-                console.log(`${title}: ${detail}`);
-            }
-        });
-    });
-});
-
-// ===================================
-// アプリケーションカードのインタラクション
-// ===================================
-
-document.addEventListener('DOMContentLoaded', () => {
-    const appCards = document.querySelectorAll('.app-card');
-
-    appCards.forEach(card => {
-        card.addEventListener('click', function() {
-            const title = this.querySelector('h4').textContent;
-            const applications = {
-                '数学': '圏論は抽象代数学、位相幾何学、ホモロジー代数などで重要な役割を果たします。',
-                'プログラミング': 'Haskellなどの関数型言語では、モナドなど圏論の概念が直接使われています。',
-                'AI・機械学習': 'ニューラルネットワークの構造や学習過程を圏論的に記述する研究が進んでいます。',
-                '認知科学': '人間がどのように概念を同一視するか、圏論を使って研究されています。',
-                '物理学': '量子力学や場の理論で、圏論的な構造が発見されています。',
-                '社会科学': 'ネットワーク理論や組織論で、圏論的な視点が応用されています。'
-            };
-
-            console.log(`${title}での応用: ${applications[title]}`);
-        });
-    });
-});
 
 // ===================================
 // キーボードショートカット
 // ===================================
 
 document.addEventListener('keydown', (e) => {
-    // 矢印キーでレッスンを移動
     const lessons = ['intro', 'category', 'functor', 'natural', 'practice'];
     const currentIndex = lessons.indexOf(currentLesson);
 
@@ -362,60 +356,20 @@ document.addEventListener('keydown', (e) => {
 });
 
 // ===================================
-// パフォーマンス最適化
-// ===================================
-
-// Intersection Observer でレイジーロード
-if ('IntersectionObserver' in window) {
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('visible');
-            }
-        });
-    }, {
-        threshold: 0.1
-    });
-
-    // 観察対象の要素
-    document.addEventListener('DOMContentLoaded', () => {
-        const animateElements = document.querySelectorAll('.example-box, .concept-card, .app-card');
-        animateElements.forEach(el => observer.observe(el));
-    });
-}
-
-// ===================================
 // デバッグ用関数
 // ===================================
 
 function debugInfo() {
     console.log('=== Category Theory App Debug Info ===');
     console.log('Current Lesson:', currentLesson);
-    console.log('Progress:', lessonProgress);
     console.log('======================================');
 }
 
-// グローバルスコープに公開
 window.debugInfo = debugInfo;
-
-// ===================================
-// エクスポート（モジュール使用時）
-// ===================================
-
-if (typeof module !== 'undefined' && module.exports) {
-    module.exports = {
-        nextLesson,
-        checkAnswer,
-        updateFunctor,
-        markLessonComplete,
-        lessonProgress
-    };
-}
 
 // ===================================
 // 初期化完了メッセージ
 // ===================================
 
-console.log('🍔 圏論学習アプリが読み込まれました！');
-console.log('💡 ヒント: 左右の矢印キーでレッスンを移動できます');
-console.log('🔧 デバッグ情報を見るには debugInfo() を実行してください');
+console.log('🍔 圏論学習アプリ（コンパクト版）が読み込まれました！');
+console.log('💡 ヒント: 左右の矢印キーでレッスン移動、用語をクリックで詳細表示');

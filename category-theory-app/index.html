@@ -18,457 +18,405 @@
         <nav class="lesson-nav">
             <button class="nav-btn active" data-lesson="intro">イントロ</button>
             <button class="nav-btn" data-lesson="category">圏とは？</button>
-            <button class="nav-btn" data-lesson="functor">関手（監守）</button>
+            <button class="nav-btn" data-lesson="functor">関手</button>
             <button class="nav-btn" data-lesson="natural">自然変換</button>
             <button class="nav-btn" data-lesson="practice">実践例</button>
         </nav>
 
-        <!-- メインコンテンツエリア -->
-        <main class="lesson-content">
-            <!-- レッスン0: イントロダクション -->
-            <section id="lesson-intro" class="lesson active">
-                <h2>圏論へようこそ！</h2>
-                <div class="content-box">
-                    <p>圏論は<strong>「関係の関係の関係」</strong>を論じる数学です。</p>
-                    <p>難しそう？大丈夫です！ハンバーグやカルボナーラを使って、楽しく学びましょう。</p>
+        <!-- メインエリア（2カラムレイアウト） -->
+        <div class="main-area">
+            <!-- 左：レッスンコンテンツ -->
+            <main class="lesson-content">
+                <!-- レッスン0: イントロダクション -->
+                <section id="lesson-intro" class="lesson active">
+                    <h2>圏論へようこそ！</h2>
 
-                    <div class="example-box">
-                        <h3>例えば：カルボナーラの作り方</h3>
-                        <p>実は、レシピも圏論の<strong>ストリング図式</strong>で表現できるんです！</p>
-                        <div class="carbonara-diagram">
-                            <div class="ingredient">🍝 パスタ</div>
-                            <div class="arrow">↓ 茹でる</div>
-                            <div class="ingredient">🥓 ベーコン</div>
-                            <div class="arrow">↓ 炒める</div>
-                            <div class="ingredient">🥚 卵液</div>
-                            <div class="arrow">↓ 混ぜる</div>
-                            <div class="result">✨ カルボナーラ完成！</div>
+                    <p>圏論は<strong class="term" data-term="category-theory">「関係の関係の関係」</strong>を論じる数学です。難しそう？大丈夫！ハンバーグで学びましょう。</p>
+
+                    <div class="concept-cards-compact">
+                        <div class="concept-card-small" onclick="showTermDetail('category')">
+                            <div class="icon">🍔</div>
+                            <h4>圏</h4>
+                            <p>物と関係</p>
+                        </div>
+                        <div class="concept-card-small" onclick="showTermDetail('functor')">
+                            <div class="icon">🍱</div>
+                            <h4>関手</h4>
+                            <p>関係の関係</p>
+                        </div>
+                        <div class="concept-card-small" onclick="showTermDetail('natural-transformation')">
+                            <div class="icon">🔄</div>
+                            <h4>自然変換</h4>
+                            <p>関係³</p>
                         </div>
                     </div>
 
-                    <div class="key-concepts">
-                        <h3>圏論の3つの重要概念</h3>
-                        <div class="concept-grid">
-                            <div class="concept-card">
-                                <h4>1. 圏（けん）</h4>
-                                <p>物と物の関係を表す</p>
-                                <div class="icon">🍔</div>
-                            </div>
-                            <div class="concept-card">
-                                <h4>2. 関手（かんしゅ）</h4>
-                                <p>関係の関係を表す</p>
-                                <div class="icon">🍱</div>
-                            </div>
-                            <div class="concept-card">
-                                <h4>3. 自然変換</h4>
-                                <p>関係の関係の関係</p>
-                                <div class="icon">🔄</div>
-                            </div>
+                    <div class="example-compact">
+                        <h3>🍝 カルボナーラのレシピも圏論で表現！</h3>
+                        <div class="mini-flow">
+                            <span class="flow-item">パスタ</span> →
+                            <span class="flow-item">茹でる</span> →
+                            <span class="flow-item">ベーコン</span> →
+                            <span class="flow-item">混ぜる</span> →
+                            <span class="flow-item">✨完成</span>
                         </div>
+                        <p class="small-note">これが<strong class="term" data-term="string-diagram">ストリング図式</strong>です</p>
                     </div>
 
-                    <button class="next-btn" onclick="nextLesson('category')">次へ：圏を学ぶ →</button>
-                </div>
-            </section>
+                    <button class="next-btn-compact" onclick="nextLesson('category')">次へ：圏を学ぶ →</button>
+                </section>
 
-            <!-- レッスン1: 圏 -->
-            <section id="lesson-category" class="lesson">
-                <h2>圏（けん）とは？</h2>
-                <div class="content-box">
-                    <p class="definition">
-                        <strong>圏</strong>とは、<strong>対象（物）</strong>と、それらを繋ぐ<strong>射（矢印）</strong>の集まりです。
-                    </p>
+                <!-- レッスン1: 圏 -->
+                <section id="lesson-category" class="lesson">
+                    <h2>圏（けん）とは？</h2>
 
-                    <div class="example-box">
-                        <h3>🍔 ハンバーグの圏</h3>
-                        <p>ファミレスのメニューを圏として見てみましょう！</p>
+                    <div class="definition-compact">
+                        <strong class="term" data-term="category">圏</strong> = <strong class="term" data-term="object">対象（物）</strong> + <strong class="term" data-term="morphism">射（矢印）</strong>
+                    </div>
 
-                        <div class="interactive-diagram" id="hamburger-category">
-                            <svg width="800" height="500" viewBox="0 0 800 500">
+                    <div class="example-compact">
+                        <h3>🍔 ハンバーグメニュー = 圏</h3>
+                        <div class="diagram-compact">
+                            <svg width="100%" height="350" viewBox="0 0 600 350">
                                 <!-- ハンバーグ -->
-                                <circle cx="400" cy="100" r="40" class="object" id="hamburger"/>
-                                <text x="400" y="105" text-anchor="middle" class="object-label">ハンバーグ</text>
+                                <circle cx="300" cy="60" r="35" class="object" id="hamburger"/>
+                                <text x="300" y="65" text-anchor="middle" class="object-label">ハンバーグ</text>
 
                                 <!-- チーズハンバーグ -->
-                                <circle cx="300" cy="250" r="40" class="object" id="cheese-hamburger"/>
-                                <text x="300" y="255" text-anchor="middle" class="object-label">チーズ</text>
-                                <text x="300" y="270" text-anchor="middle" class="object-label">ハンバーグ</text>
+                                <circle cx="200" cy="180" r="35" class="object" id="cheese-hamburger"/>
+                                <text x="200" y="180" text-anchor="middle" class="object-label small">チーズ</text>
+                                <text x="200" y="195" text-anchor="middle" class="object-label small">ハンバーグ</text>
 
                                 <!-- デミグラスハンバーグ -->
-                                <circle cx="500" cy="250" r="40" class="object" id="demi-hamburger"/>
-                                <text x="500" y="255" text-anchor="middle" class="object-label">デミグラス</text>
-                                <text x="500" y="270" text-anchor="middle" class="object-label">ハンバーグ</text>
+                                <circle cx="400" cy="180" r="35" class="object" id="demi-hamburger"/>
+                                <text x="400" y="180" text-anchor="middle" class="object-label small">デミグラス</text>
+                                <text x="400" y="195" text-anchor="middle" class="object-label small">ハンバーグ</text>
 
-                                <!-- デミグラスチーズハンバーグ -->
-                                <circle cx="400" cy="400" r="40" class="object" id="demi-cheese-hamburger"/>
-                                <text x="400" y="395" text-anchor="middle" class="object-label">デミグラス</text>
-                                <text x="400" y="410" text-anchor="middle" class="object-label">チーズ</text>
+                                <!-- デミグラスチーズ -->
+                                <circle cx="300" cy="290" r="35" class="object" id="demi-cheese-hamburger"/>
+                                <text x="300" y="290" text-anchor="middle" class="object-label small">デミチーズ</text>
 
-                                <!-- 矢印（射） -->
+                                <!-- 矢印 -->
                                 <defs>
                                     <marker id="arrowhead" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
                                         <polygon points="0 0, 10 3, 0 6" fill="#2563eb"/>
                                     </marker>
                                 </defs>
 
-                                <!-- ハンバーグ → チーズハンバーグ -->
-                                <line x1="370" y1="130" x2="330" y2="215" class="arrow" marker-end="url(#arrowhead)"/>
-                                <text x="340" y="165" class="arrow-label">チーズを乗せる</text>
+                                <line x1="270" y1="90" x2="225" y2="150" class="arrow" marker-end="url(#arrowhead)"/>
+                                <text x="235" y="115" class="arrow-label-small">+チーズ</text>
 
-                                <!-- ハンバーグ → デミグラスハンバーグ -->
-                                <line x1="430" y1="130" x2="470" y2="215" class="arrow" marker-end="url(#arrowhead)"/>
-                                <text x="460" y="165" class="arrow-label">ソースをかける</text>
+                                <line x1="330" y1="90" x2="375" y2="150" class="arrow" marker-end="url(#arrowhead)"/>
+                                <text x="365" y="115" class="arrow-label-small">+ソース</text>
 
-                                <!-- チーズハンバーグ → デミグラスチーズ -->
-                                <line x1="330" y1="285" x2="375" y2="365" class="arrow" marker-end="url(#arrowhead)"/>
-                                <text x="340" y="330" class="arrow-label">ソースをかける</text>
+                                <line x1="225" y1="210" x2="275" y2="260" class="arrow" marker-end="url(#arrowhead)"/>
+                                <text x="235" y="240" class="arrow-label-small">+ソース</text>
 
-                                <!-- デミグラスハンバーグ → デミグラスチーズ -->
-                                <line x1="470" y1="285" x2="425" y2="365" class="arrow" marker-end="url(#arrowhead)"/>
-                                <text x="460" y="330" class="arrow-label">チーズを乗せる</text>
+                                <line x1="375" y1="210" x2="325" y2="260" class="arrow" marker-end="url(#arrowhead)"/>
+                                <text x="365" y="240" class="arrow-label-small">+チーズ</text>
                             </svg>
                         </div>
 
-                        <div class="explanation">
-                            <h4>ポイント：</h4>
-                            <ul>
-                                <li><strong>対象（丸）</strong>：ハンバーグの種類</li>
-                                <li><strong>射（矢印）</strong>：何かを加える操作</li>
-                                <li><strong>合成</strong>：「チーズを乗せる」→「ソースをかける」= デミグラスチーズハンバーグ</li>
-                            </ul>
-                            <p class="tip">💡 同じ結果になる経路が複数あることに注目！これが圏の面白いところです。</p>
+                        <div class="key-points">
+                            <p><strong class="term" data-term="object">対象</strong>：ハンバーグの種類（丸）</p>
+                            <p><strong class="term" data-term="morphism">射</strong>：何かを加える操作（矢印）</p>
+                            <p><strong class="term" data-term="composition">合成</strong>：「チーズ」→「ソース」も1つの射</p>
                         </div>
                     </div>
 
-                    <div class="quiz-box">
-                        <h3>理解度チェック</h3>
-                        <p>Q: ハンバーグに「チーズを乗せて」から「デミグラスソースをかける」のと、「デミグラスソースをかけて」から「チーズを乗せる」のは同じ結果になる？</p>
-                        <div class="quiz-options">
-                            <button class="quiz-btn" onclick="checkAnswer(true)">はい、同じになる</button>
-                            <button class="quiz-btn" onclick="checkAnswer(false)">いいえ、違う</button>
+                    <div class="quiz-compact">
+                        <p><strong>Q:</strong> チーズ→ソースと、ソース→チーズは同じ結果？</p>
+                        <div class="quiz-btns">
+                            <button class="quiz-btn-small" onclick="checkAnswer(true)">はい</button>
+                            <button class="quiz-btn-small" onclick="checkAnswer(false)">いいえ</button>
                         </div>
                         <div id="quiz-result" class="quiz-result"></div>
                     </div>
 
-                    <button class="next-btn" onclick="nextLesson('functor')">次へ：関手を学ぶ →</button>
-                </div>
-            </section>
+                    <button class="next-btn-compact" onclick="nextLesson('functor')">次へ：関手を学ぶ →</button>
+                </section>
 
-            <!-- レッスン2: 関手 -->
-            <section id="lesson-functor" class="lesson">
-                <h2>関手（かんしゅ）とは？</h2>
-                <div class="content-box">
-                    <p class="definition">
-                        <strong>関手</strong>は、2つの圏の間の関係です。<br>
-                        物だけでなく、<strong>関係も対応</strong>させます。
-                    </p>
+                <!-- レッスン2: 関手 -->
+                <section id="lesson-functor" class="lesson">
+                    <h2>関手（かんしゅ）とは？</h2>
 
-                    <div class="example-box">
-                        <h3>🍱 ライスセット関手</h3>
-                        <p>ファミレスのメニューで「ライスセット」を選ぶことは、実は関手なんです！</p>
+                    <div class="definition-compact">
+                        <strong class="term" data-term="functor">関手</strong> = 圏から圏への構造を保つ写像
+                    </div>
 
-                        <div class="functor-diagram">
-                            <div class="category-pair">
-                                <div class="category-box">
-                                    <h4>ハンバーグの圏</h4>
-                                    <div class="mini-diagram">
-                                        <div class="object-node">ハンバーグ</div>
-                                        <div class="object-node">チーズハンバーグ</div>
-                                        <div class="object-node">デミグラスハンバーグ</div>
-                                    </div>
+                    <div class="example-compact">
+                        <h3>🍱 ライスセット = 関手</h3>
+
+                        <div class="functor-visual">
+                            <div class="functor-column">
+                                <h4>ハンバーグの圏</h4>
+                                <div class="object-list">
+                                    <div class="obj-item">ハンバーグ</div>
+                                    <div class="obj-item">チーズハンバーグ</div>
+                                    <div class="obj-item">デミハンバーグ</div>
                                 </div>
+                            </div>
 
-                                <div class="functor-arrow">
-                                    <div class="functor-label">ライスセット関手 🍚</div>
-                                    <div class="big-arrow">⟹</div>
-                                </div>
+                            <div class="functor-middle">
+                                <div class="functor-label-big">ライスセット<br/>関手 🍚</div>
+                                <div class="big-arrow-custom">⟹</div>
+                            </div>
 
-                                <div class="category-box">
-                                    <h4>定食の圏</h4>
-                                    <div class="mini-diagram">
-                                        <div class="object-node">ハンバーグライス定食</div>
-                                        <div class="object-node">チーズハンバーグライス定食</div>
-                                        <div class="object-node">デミグラスハンバーグライス定食</div>
-                                    </div>
+                            <div class="functor-column">
+                                <h4>定食の圏</h4>
+                                <div class="object-list">
+                                    <div class="obj-item">ハンバーグライス定食</div>
+                                    <div class="obj-item">チーズハンバーグライス定食</div>
+                                    <div class="obj-item">デミハンバーグライス定食</div>
                                 </div>
                             </div>
                         </div>
 
-                        <div class="explanation">
-                            <h4>関手が対応させるもの：</h4>
-                            <ol>
-                                <li><strong>物 → 物</strong>：ハンバーグ → ハンバーグライス定食</li>
-                                <li><strong>関係 → 関係</strong>：「チーズを乗せる」という関係も保存される</li>
-                            </ol>
-                            <p class="tip">💡 つまり、チーズハンバーグのライス定食は、ハンバーグライス定食に「チーズを乗せた」ものと同じ関係を持っています！</p>
+                        <div class="key-points">
+                            <p>✓ <strong>物→物</strong>：ハンバーグ → ハンバーグライス定食</p>
+                            <p>✓ <strong>関係→関係</strong>：「+チーズ」の関係も保存</p>
                         </div>
                     </div>
 
-                    <div class="interactive-functor">
-                        <h3>インタラクティブ体験：セットメニューを選ぼう</h3>
-                        <div class="selector-panel">
-                            <div class="selector">
-                                <label>料理を選ぶ：</label>
-                                <select id="dish-select" onchange="updateFunctor()">
-                                    <option value="hamburger">ハンバーグ</option>
-                                    <option value="cheese">チーズハンバーグ</option>
-                                    <option value="demi">デミグラスハンバーグ</option>
-                                </select>
-                            </div>
-                            <div class="selector">
-                                <label>セットの種類：</label>
-                                <select id="set-select" onchange="updateFunctor()">
-                                    <option value="rice">ライスセット 🍚</option>
-                                    <option value="bread">パンセット 🍞</option>
-                                    <option value="salad">サラダセット 🥗</option>
-                                </select>
-                            </div>
+                    <div class="interactive-compact">
+                        <h4>体験：セットを選ぼう</h4>
+                        <div class="selector-row">
+                            <select id="dish-select" onchange="updateFunctor()">
+                                <option value="hamburger">ハンバーグ</option>
+                                <option value="cheese">チーズハンバーグ</option>
+                                <option value="demi">デミハンバーグ</option>
+                            </select>
+                            <span class="arrow-text">+</span>
+                            <select id="set-select" onchange="updateFunctor()">
+                                <option value="rice">ライス 🍚</option>
+                                <option value="bread">パン 🍞</option>
+                                <option value="salad">サラダ 🥗</option>
+                            </select>
                         </div>
-                        <div class="result-display">
-                            <div class="result-arrow">↓</div>
-                            <div class="result-box" id="functor-result">
-                                <strong>結果：</strong><span id="result-text">ハンバーグライス定食</span>
-                            </div>
+                        <div class="result-compact" id="functor-result">
+                            <span id="result-text">ハンバーグライス定食</span>
                         </div>
                     </div>
 
-                    <button class="next-btn" onclick="nextLesson('natural')">次へ：自然変換を学ぶ →</button>
-                </div>
-            </section>
+                    <button class="next-btn-compact" onclick="nextLesson('natural')">次へ：自然変換を学ぶ →</button>
+                </section>
 
-            <!-- レッスン3: 自然変換 -->
-            <section id="lesson-natural" class="lesson">
-                <h2>自然変換とは？</h2>
-                <div class="content-box">
-                    <p class="definition">
-                        <strong>自然変換</strong>は、2つの関手の間の関係です。<br>
-                        つまり、<strong>関係の関係の関係</strong>！
-                    </p>
+                <!-- レッスン3: 自然変換 -->
+                <section id="lesson-natural" class="lesson">
+                    <h2>自然変換とは？</h2>
 
-                    <div class="example-box">
-                        <h3>🍚→🍞 ライスからパンへの変更</h3>
-                        <p>「ライスにしますか、パンにしますか？」これが自然変換です！</p>
+                    <div class="definition-compact">
+                        <strong class="term" data-term="natural-transformation">自然変換</strong> = 関手から関手への「自然な」対応
+                    </div>
 
-                        <div class="natural-transformation-diagram">
-                            <div class="transformation-grid">
-                                <div class="grid-header">
-                                    <div></div>
-                                    <div class="functor-name">ライスセット関手</div>
-                                    <div class="functor-name">パンセット関手</div>
-                                </div>
+                    <div class="example-compact">
+                        <h3>🍚→🍞 ライスからパンへ</h3>
 
-                                <div class="grid-row">
-                                    <div class="dish-name">和風ハンバーグ</div>
-                                    <div class="result-cell">和風ハンバーグライス定食</div>
-                                    <div class="transform-arrow">
-                                        <span class="transform-label">自然変換<br/>（ライス→パン）</span>
-                                        <span class="arrow-symbol">⟹</span>
-                                    </div>
-                                    <div class="result-cell">和風ハンバーグパン定食</div>
-                                </div>
-
-                                <div class="vertical-arrow">
-                                    <span>↓</span><br/>
-                                    <span class="relation-label">煮込む</span><br/>
-                                    <span>↓</span>
-                                </div>
-
-                                <div class="grid-row">
-                                    <div class="dish-name">和風煮込みハンバーグ</div>
-                                    <div class="result-cell">和風煮込みハンバーグライス定食</div>
-                                    <div class="transform-arrow">
-                                        <span class="transform-label">自然変換<br/>（ライス→パン）</span>
-                                        <span class="arrow-symbol">⟹</span>
-                                    </div>
-                                    <div class="result-cell">和風煮込みハンバーグパン定食</div>
-                                </div>
+                        <div class="natural-visual">
+                            <div class="natural-grid">
+                                <div></div>
+                                <div class="grid-label">ライス</div>
+                                <div></div>
+                                <div class="grid-label">パン</div>
+                            </div>
+                            <div class="natural-grid">
+                                <div class="dish-label">和風ハンバーグ</div>
+                                <div class="result">和風ライス定食</div>
+                                <div class="transform">⟹</div>
+                                <div class="result">和風パン定食</div>
+                            </div>
+                            <div class="vertical-relation">↓ 煮込む</div>
+                            <div class="natural-grid">
+                                <div class="dish-label">和風煮込み</div>
+                                <div class="result">和風煮込みライス定食</div>
+                                <div class="transform">⟹</div>
+                                <div class="result">和風煮込みパン定食</div>
                             </div>
                         </div>
 
-                        <div class="explanation">
-                            <h4>自然性条件：</h4>
-                            <p>これが「自然」である理由は、<strong>どの順序で操作しても同じ結果</strong>になるからです：</p>
-                            <ul>
-                                <li>パターン1：和風ハンバーグ → ライス定食にする → 煮込む = 和風煮込みハンバーグライス定食</li>
-                                <li>パターン2：和風ハンバーグ → 煮込む → ライス定食にする = 和風煮込みハンバーグライス定食</li>
-                            </ul>
-                            <p>さらに、ライスからパンに変更しても、この<strong>関係性は保たれます</strong>。</p>
-                            <p class="tip">💡 これが「自然」変換と呼ばれる理由です。関係性を壊さずに変換できるんです！</p>
+                        <div class="key-points">
+                            <p><strong class="term" data-term="naturality">自然性</strong>：どの順序でも同じ結果</p>
+                            <p>「煮込む→パンにする」 = 「パンにする→煮込む」</p>
                         </div>
                     </div>
 
-                    <div class="interactive-natural">
-                        <h3>インタラクティブ体験：自然変換を確認しよう</h3>
-                        <div class="path-comparison">
-                            <div class="path">
-                                <h4>経路A</h4>
-                                <div class="step">1. 和風ハンバーグ</div>
-                                <div class="step-arrow">↓ 煮込む</div>
-                                <div class="step">2. 和風煮込みハンバーグ</div>
-                                <div class="step-arrow">↓ パンセットにする</div>
-                                <div class="step result">3. 和風煮込みハンバーグパン定食</div>
-                            </div>
-
-                            <div class="vs">VS</div>
-
-                            <div class="path">
-                                <h4>経路B</h4>
-                                <div class="step">1. 和風ハンバーグ</div>
-                                <div class="step-arrow">↓ パンセットにする</div>
-                                <div class="step">2. 和風ハンバーグパン定食</div>
-                                <div class="step-arrow">↓ 煮込む</div>
-                                <div class="step result">3. 和風煮込みハンバーグパン定食</div>
-                            </div>
+                    <div class="path-compare-compact">
+                        <div class="path-mini">
+                            <strong>経路A</strong><br/>
+                            和風 → 煮込む → パン
                         </div>
-                        <div class="comparison-result">
-                            <p><strong>結果は同じ！</strong> これが自然変換の「自然性」です。</p>
+                        <span class="vs-small">VS</span>
+                        <div class="path-mini">
+                            <strong>経路B</strong><br/>
+                            和風 → パン → 煮込む
                         </div>
                     </div>
+                    <p class="result-note">✓ 両方とも「和風煮込みパン定食」！</p>
 
-                    <button class="next-btn" onclick="nextLesson('practice')">次へ：実践例を見る →</button>
-                </div>
-            </section>
+                    <button class="next-btn-compact" onclick="nextLesson('practice')">次へ：実践例を見る →</button>
+                </section>
 
-            <!-- レッスン4: 実践例 -->
-            <section id="lesson-practice" class="lesson">
-                <h2>圏論の実践例</h2>
-                <div class="content-box">
-                    <p>圏論は数学だけでなく、<strong>社会や仕事にも応用</strong>できます！</p>
+                <!-- レッスン4: 実践例 -->
+                <section id="lesson-practice" class="lesson">
+                    <h2>圏論の実践</h2>
 
-                    <div class="example-box">
-                        <h3>🏢 会社組織での応用</h3>
-                        <p>最大公約数的な考え方で、調整役を配置する</p>
+                    <div class="example-compact">
+                        <h3>🏢 会社組織に応用</h3>
+                        <div class="org-diagram-compact">
+                            <svg width="100%" height="250" viewBox="0 0 400 250">
+                                <circle cx="200" cy="40" r="25" class="company-node president"/>
+                                <text x="200" y="45" text-anchor="middle" class="node-label small">社長</text>
 
-                        <div class="company-diagram">
-                            <svg width="600" height="400" viewBox="0 0 600 400">
-                                <!-- 社長 -->
-                                <circle cx="300" cy="50" r="30" class="company-node president"/>
-                                <text x="300" y="55" text-anchor="middle" class="node-label">社長</text>
+                                <circle cx="200" cy="125" r="25" class="company-node coordinator"/>
+                                <text x="200" y="130" text-anchor="middle" class="node-label small">調整役</text>
 
-                                <!-- 調整役 -->
-                                <circle cx="300" cy="150" r="30" class="company-node coordinator"/>
-                                <text x="300" y="155" text-anchor="middle" class="node-label">調整役</text>
+                                <circle cx="100" cy="210" r="25" class="company-node department"/>
+                                <text x="100" y="215" text-anchor="middle" class="node-label small">部署1</text>
 
-                                <!-- 部署1 -->
-                                <circle cx="150" cy="300" r="30" class="company-node department"/>
-                                <text x="150" y="305" text-anchor="middle" class="node-label">部署1</text>
+                                <circle cx="300" cy="210" r="25" class="company-node department"/>
+                                <text x="300" y="215" text-anchor="middle" class="node-label small">部署2</text>
 
-                                <!-- 部署2 -->
-                                <circle cx="450" cy="300" r="30" class="company-node department"/>
-                                <text x="450" y="305" text-anchor="middle" class="node-label">部署2</text>
-
-                                <!-- 矢印 -->
-                                <line x1="300" y1="80" x2="300" y2="120" class="company-arrow" marker-end="url(#arrowhead)"/>
-                                <line x1="280" y1="175" x2="170" y2="275" class="company-arrow" marker-end="url(#arrowhead)"/>
-                                <line x1="320" y1="175" x2="430" y2="275" class="company-arrow" marker-end="url(#arrowhead)"/>
+                                <line x1="200" y1="65" x2="200" y2="100" class="company-arrow" marker-end="url(#arrowhead)"/>
+                                <line x1="185" y1="145" x2="115" y2="190" class="company-arrow" marker-end="url(#arrowhead)"/>
+                                <line x1="215" y1="145" x2="285" y2="190" class="company-arrow" marker-end="url(#arrowhead)"/>
                             </svg>
                         </div>
+                        <p class="small-note">調整役 = 2つの部署の<strong class="term" data-term="limit">最大公約数</strong>的存在</p>
+                    </div>
 
-                        <div class="explanation">
-                            <p><strong>圏論的な解釈：</strong></p>
-                            <ul>
-                                <li>部署1と部署2 = 対象（物）</li>
-                                <li>社長からの指示 = 射（関係）</li>
-                                <li>調整役 = 2つの部署の「最大公約数」的な存在（極限）</li>
-                            </ul>
-                            <p class="tip">💡 調整役は、できるだけ部署に近く、かつ両部署に共通する役割。これが圏論の「極限」の概念です！</p>
+                    <div class="example-compact">
+                        <h3>🔍 関係の類似性</h3>
+                        <div class="analogy-compact">
+                            <div class="analogy-item">
+                                <strong>モナカ→マカロン</strong>
+                            </div>
+                            <div class="similarity-mark">≈<br/><small>関係が似てる</small></div>
+                            <div class="analogy-item">
+                                <strong>手巻き寿司→クレープ</strong>
+                            </div>
+                        </div>
+                        <p class="small-note">物は違うけど、関係性は似ている！</p>
+                    </div>
+
+                    <div class="applications-compact">
+                        <h4>圏論の応用分野</h4>
+                        <div class="app-grid-compact">
+                            <span class="app-tag">🧮 数学</span>
+                            <span class="app-tag">💻 プログラミング</span>
+                            <span class="app-tag">🤖 AI</span>
+                            <span class="app-tag">🧠 認知科学</span>
+                            <span class="app-tag">⚛️ 物理学</span>
+                            <span class="app-tag">📊 社会科学</span>
                         </div>
                     </div>
 
-                    <div class="example-box">
-                        <h3>🔍 類似性の発見</h3>
-                        <p>モナカとマカロン、手巻き寿司とクレープ</p>
-
-                        <div class="analogy-comparison">
-                            <div class="analogy-pair">
-                                <div class="analogy-box">
-                                    <h4>パターンA</h4>
-                                    <div class="item">モナカ</div>
-                                    <div class="relation-arrow">↓ 子孫</div>
-                                    <div class="item">マカロン</div>
-                                </div>
-
-                                <div class="similarity-sign">
-                                    <div class="similarity-label">関係が似ている！</div>
-                                    <div class="similarity-arrow">⟺</div>
-                                </div>
-
-                                <div class="analogy-box">
-                                    <h4>パターンB</h4>
-                                    <div class="item">手巻き寿司</div>
-                                    <div class="relation-arrow">↓ 発展形</div>
-                                    <div class="item">クレープ</div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="explanation">
-                            <p><strong>ポイント：</strong></p>
-                            <p>モナカと手巻き寿司は似ていないし、マカロンとクレープも似ていない。</p>
-                            <p>でも、<strong>「モナカ→マカロン」の関係と「手巻き寿司→クレープ」の関係は似ている</strong>！</p>
-                            <p class="tip">💡 これが圏論の力。物自体ではなく、<strong>関係性に注目</strong>することで、新しい類似性が見えてきます。</p>
-                        </div>
+                    <div class="conclusion-compact">
+                        <h3>🎉 学習完了！</h3>
+                        <p>✅ <strong>圏</strong>：対象と射<br/>
+                        ✅ <strong>関手</strong>：圏の関係<br/>
+                        ✅ <strong>自然変換</strong>：関手の関係</p>
+                        <p class="final-note">関係性に注目すると、世界が変わって見えます！</p>
                     </div>
 
-                    <div class="application-grid">
-                        <h3>圏論が使われている分野</h3>
-                        <div class="app-cards">
-                            <div class="app-card">
-                                <div class="app-icon">🧮</div>
-                                <h4>数学</h4>
-                                <p>代数幾何学、トポロジー</p>
-                            </div>
-                            <div class="app-card">
-                                <div class="app-icon">💻</div>
-                                <h4>プログラミング</h4>
-                                <p>関数型プログラミング</p>
-                            </div>
-                            <div class="app-card">
-                                <div class="app-icon">🤖</div>
-                                <h4>AI・機械学習</h4>
-                                <p>ニューラルネットワーク</p>
-                            </div>
-                            <div class="app-card">
-                                <div class="app-icon">🧠</div>
-                                <h4>認知科学</h4>
-                                <p>概念の同一性研究</p>
-                            </div>
-                            <div class="app-card">
-                                <div class="app-icon">⚛️</div>
-                                <h4>物理学</h4>
-                                <p>量子力学</p>
-                            </div>
-                            <div class="app-card">
-                                <div class="app-icon">📊</div>
-                                <h4>社会科学</h4>
-                                <p>組織論、ネットワーク理論</p>
-                            </div>
-                        </div>
-                    </div>
+                    <button class="next-btn-compact" onclick="nextLesson('intro')">最初から学び直す</button>
+                </section>
+            </main>
 
-                    <div class="conclusion-box">
-                        <h3>🎉 おめでとうございます！</h3>
-                        <p>圏論の基本的な概念を学びました。</p>
-                        <ul>
-                            <li>✅ <strong>圏</strong>：対象と射の集まり</li>
-                            <li>✅ <strong>関手</strong>：圏と圏の関係（物も関係も対応）</li>
-                            <li>✅ <strong>自然変換</strong>：関手と関手の関係（自然に変換）</li>
-                        </ul>
-                        <p class="final-message">
-                            圏論は「関係性」に注目することで、世界を新しい目で見る力を与えてくれます。<br/>
-                            日常生活や仕事でも、この視点を活かしてみてください！
-                        </p>
-                    </div>
-
-                    <button class="restart-btn" onclick="nextLesson('intro')">最初から学び直す</button>
+            <!-- 右：用語解説サイドバー -->
+            <aside class="glossary-sidebar">
+                <div class="sidebar-header">
+                    <h3>📖 用語解説</h3>
+                    <p class="sidebar-note">用語をクリックで詳細表示</p>
                 </div>
-            </section>
-        </main>
+
+                <div class="glossary-content">
+                    <!-- 基本用語 -->
+                    <div class="term-section">
+                        <h4>基本概念</h4>
+
+                        <div class="term-card" id="term-category-theory">
+                            <h5>圏論 (Category Theory)</h5>
+                            <p>「関係の関係の関係」を扱う数学の分野。物そのものより、物と物の関係性に注目します。</p>
+                        </div>
+
+                        <div class="term-card" id="term-category">
+                            <h5>圏 (Category)</h5>
+                            <p><strong>対象</strong>と<strong>射</strong>の集まり。射は合成でき、恒等射が存在します。</p>
+                            <p class="example-text">例：ハンバーグメニュー全体</p>
+                        </div>
+
+                        <div class="term-card" id="term-object">
+                            <h5>対象 (Object)</h5>
+                            <p>圏を構成する「物」。具体的な物である必要はなく、抽象的な概念でもOK。</p>
+                            <p class="example-text">例：ハンバーグ、チーズハンバーグ</p>
+                        </div>
+
+                        <div class="term-card" id="term-morphism">
+                            <h5>射 (Morphism)</h5>
+                            <p>対象から対象への「矢印」。操作、変換、関係を表します。</p>
+                            <p class="example-text">例：「チーズを乗せる」</p>
+                        </div>
+
+                        <div class="term-card" id="term-composition">
+                            <h5>合成 (Composition)</h5>
+                            <p>複数の射を繋げて1つの射にすること。f: A→B と g: B→C があれば、g∘f: A→C ができます。</p>
+                            <p class="example-text">例：「チーズ」+「ソース」</p>
+                        </div>
+                    </div>
+
+                    <!-- 関手 -->
+                    <div class="term-section">
+                        <h4>関手</h4>
+
+                        <div class="term-card" id="term-functor">
+                            <h5>関手 (Functor)</h5>
+                            <p>圏から圏への「構造を保つ写像」。対象も射も対応させます。</p>
+                            <p class="example-text">例：ライスセット関手</p>
+                        </div>
+
+                        <div class="term-card" id="term-natural-transformation">
+                            <h5>自然変換 (Natural Transformation)</h5>
+                            <p>2つの関手の間の「自然な対応」。関係性を壊さずに変換します。</p>
+                            <p class="example-text">例：ライス→パンの変更</p>
+                        </div>
+
+                        <div class="term-card" id="term-naturality">
+                            <h5>自然性 (Naturality)</h5>
+                            <p>どの順序で操作しても同じ結果になる性質。可換図式で表現されます。</p>
+                        </div>
+                    </div>
+
+                    <!-- 応用概念 -->
+                    <div class="term-section">
+                        <h4>応用概念</h4>
+
+                        <div class="term-card" id="term-limit">
+                            <h5>極限 (Limit)</h5>
+                            <p>ある図式の「最も普遍的な頂点」。最大公約数のような存在。</p>
+                            <p class="example-text">例：調整役（会社組織）</p>
+                        </div>
+
+                        <div class="term-card" id="term-string-diagram">
+                            <h5>ストリング図式</h5>
+                            <p>射を線で、対象を線上の点で表す図式。視覚的に分かりやすい表現方法。</p>
+                            <p class="example-text">例：カルボナーラのレシピ</p>
+                        </div>
+                    </div>
+
+                    <!-- 現在学習中 -->
+                    <div class="current-learning">
+                        <h4>📍 今学んでいる概念</h4>
+                        <div id="current-term-detail" class="current-detail">
+                            <p>用語をクリックすると、ここに詳細が表示されます</p>
+                        </div>
+                    </div>
+                </div>
+            </aside>
+        </div>
 
         <!-- フッター -->
         <footer>
-            <p>参考：加藤文元『はじめての圏論』</p>
-            <p>Category Theory Learning App - 2024</p>
+            <p>参考：加藤文元『はじめての圏論』 | YouTube: ほぼハンバーグで数学「圏論」を語ります</p>
         </footer>
     </div>
 
